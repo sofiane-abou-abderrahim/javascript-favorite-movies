@@ -17,5 +17,10 @@ const toggleMovieModal = () => {
   toggleBackdrop(); // instead of adding another startAddMovieButton event listener
 };
 
+const backdropClickHandler = () => {
+  toggleMovieModal(); // close modal and backdrop
+};
+
 startAddMovieButton.addEventListener('click', toggleMovieModal);
 // startAddMovieButton.addEventListener('click', toggleBackdrop); // called toggleBackdrop function inside toggleMovieModal instead
+backdrop.addEventListener('click', backdropClickHandler);
