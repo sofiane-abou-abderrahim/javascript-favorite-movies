@@ -24,8 +24,17 @@ const toggleMovieModal = () => {
   toggleBackdrop(); // instead of adding another startAddMovieButton event listener
 };
 
+const clearMovieInput = () => {
+  // userInputs[0].value = '';
+  for (const usrInput of userInputs) {
+    // userInputs is an array-like object (a node list full of input elements)
+    usrInput.value = '';
+  }
+};
+
 const cancelAddMovieHandler = () => {
   toggleMovieModal(); // close modal and backdrop
+  clearMovieInput(); // cancel user input
 };
 
 const addMovieHandler = () => {
@@ -53,6 +62,7 @@ const addMovieHandler = () => {
   movies.push(newMovie);
   console.log(movies);
   toggleMovieModal(); // close modal and backdrop
+  clearMovieInput(); // cancel user input
 };
 
 const backdropClickHandler = () => {
