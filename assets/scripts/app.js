@@ -10,8 +10,33 @@ const cancelAddMovieButton = addMovieModal.querySelector('.btn--passive');
 const confirmAddMovieButton = cancelAddMovieButton.nextElementSibling; // just to practice the DOM traversal
 const userInputs = addMovieModal.querySelectorAll('input');
 // const userInputs = addMovieModal.getElementsByTagName('input');
+const entryTextSection = document.getElementById('entry-text');
 
 const movies = [];
+
+const updateUI = () => {
+  if (movies.length === 0) {
+    entryTextSection.style.display = 'block';
+  } else {
+    entryTextSection.style.display = 'none';
+  }
+};
+
+const renderNewMovieElement = (title, imageUrl, rating) => {
+  const newMovieElement = document.createElement('li');
+  newMovieElement.className = 'movie-element'; // class in app.css to style the elements in the list
+  newMovieElement.innerHTML = `
+    <div class="movie-element__image">
+      <img src="${imageUrl}" alt="${title}">
+    </div>
+    <div class="movie-element__info">
+      <h2>${title}</h2>
+      <p>${rating}/5 stars</p>
+    </div>
+  `;
+  const listRoot = document.getElementById('movie-list');
+  listRoot.append(newMovieElement);
+};
 
 const toggleBackdrop = () => {
   backdrop.classList.toggle('visible');
@@ -33,8 +58,8 @@ const clearMovieInput = () => {
 };
 
 const cancelAddMovieHandler = () => {
-  toggleMovieModal(); // close modal and backdrop
-  clearMovieInput(); // cancel user input
+  toggleMovieModal(); // closes modal and backdrop
+  clearMovieInput(); // cancels user input
 };
 
 const addMovieHandler = () => {
@@ -61,12 +86,14 @@ const addMovieHandler = () => {
 
   movies.push(newMovie);
   console.log(movies);
-  toggleMovieModal(); // close modal and backdrop
-  clearMovieInput(); // cancel user input
+  toggleMovieModal(); // closes modal and backdrop
+  clearMovieInput(); // cancels user input
+  updateUI(); // updates entry text UI whenever a movie is added
+  renderNewMovieElement(newMovie.title, newMovie.image, newMovie.rating); // renders new movie elements on the screen
 };
 
 const backdropClickHandler = () => {
-  toggleMovieModal(); // close modal and backdrop
+  toggleMovieModal(); // closes modal and backdrop
 };
 
 startAddMovieButton.addEventListener('click', toggleMovieModal);
