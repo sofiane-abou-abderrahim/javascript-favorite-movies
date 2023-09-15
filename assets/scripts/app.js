@@ -5,6 +5,7 @@ const startAddMovieButton = document.querySelector('header button');
 // const startAddMovieButton = document.querySelector('header').lastElementChild;
 const backdrop = document.getElementById('backdrop');
 // const backdrop = document.body.firstElementChild;
+const cancelAddMovieButton = addMovieModal.querySelector('.btn--passive');
 
 const toggleBackdrop = () => {
   backdrop.classList.toggle('visible');
@@ -17,6 +18,10 @@ const toggleMovieModal = () => {
   toggleBackdrop(); // instead of adding another startAddMovieButton event listener
 };
 
+const cancelAddMovie = () => {
+  toggleMovieModal(); // close modal and backdrop
+};
+
 const backdropClickHandler = () => {
   toggleMovieModal(); // close modal and backdrop
 };
@@ -24,3 +29,4 @@ const backdropClickHandler = () => {
 startAddMovieButton.addEventListener('click', toggleMovieModal);
 // startAddMovieButton.addEventListener('click', toggleBackdrop); // called toggleBackdrop function inside toggleMovieModal instead
 backdrop.addEventListener('click', backdropClickHandler);
+cancelAddMovieButton.addEventListener('click', cancelAddMovie);
