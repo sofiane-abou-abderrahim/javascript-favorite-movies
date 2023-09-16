@@ -22,7 +22,28 @@ const updateUI = () => {
   }
 };
 
-const renderNewMovieElement = (title, imageUrl, rating) => {
+/*
+we use movieId to find that movie with that ID in the movies array (declared above)
+// The movie index in movie array = index in newMovieElement in listRoot in renderNewMovieElement function
+  => because the order when we add the movie is the same
+So, we use a for of loop to find out the index in the array
+*/
+const deleteMovieHandler = movieId => {
+  let movieIndex = 0;
+  for (const movie of movies) {
+    if (movie.id === movieId) {
+      break;
+    }
+    movieIndex++;
+  }
+  movies.splice(movieIndex, 1); // First, we remove the element from our list of movies from the array in JavaScript
+  const listRoot = document.getElementById('movie-list');
+  listRoot.children[movieIndex].remove(); // Secondly, we remove it from the DOM
+  // listRoot.removeChild(listRoot.children[movieIndex]);
+};
+
+const renderNewMovieElement = (id, title, imageUrl, rating) => {
+  // we add the unique identifier as an argument so we can bind it in newMovieElement event listener
   const newMovieElement = document.createElement('li');
   newMovieElement.className = 'movie-element'; // class in app.css to style the elements in the list
   newMovieElement.innerHTML = `
@@ -34,6 +55,9 @@ const renderNewMovieElement = (title, imageUrl, rating) => {
       <p>${rating}/5 stars</p>
     </div>
   `;
+  // outside this function, newMovieElement is undefined
+  newMovieElement.addEventListener('click', deleteMovieHandler.bind(null, id));
+  // bind() helps us to find out which element was clicked, and we need a unique identifier for that movie that's created
   const listRoot = document.getElementById('movie-list');
   listRoot.append(newMovieElement);
 };
@@ -79,6 +103,7 @@ const addMovieHandler = () => {
   }
 
   const newMovie = {
+    id: Math.random().toString(), // we create an id to get it as an argument in renderNewMovieElement and bind it in newMovieElement event listener
     title: titleValue,
     image: imageUrlValue,
     rating: ratingValue
@@ -89,7 +114,12 @@ const addMovieHandler = () => {
   toggleMovieModal(); // closes modal and backdrop
   clearMovieInput(); // cancels user input
   updateUI(); // updates entry text UI whenever a movie is added
-  renderNewMovieElement(newMovie.title, newMovie.image, newMovie.rating); // renders new movie elements on the screen
+  renderNewMovieElement(
+    newMovie.id,
+    newMovie.title,
+    newMovie.image,
+    newMovie.rating
+  ); // renders new movie elements on the screen
 };
 
 const backdropClickHandler = () => {
