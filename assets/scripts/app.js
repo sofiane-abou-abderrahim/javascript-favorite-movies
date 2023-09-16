@@ -28,7 +28,8 @@ we use movieId to find that movie with that ID in the movies array (declared abo
   => because the order when we add the movie is the same
 So, we use a for of loop to find out the index in the array
 */
-const deleteMovieHandler = movieId => {
+
+const deleteMovie = () => {
   let movieIndex = 0;
   for (const movie of movies) {
     if (movie.id === movieId) {
@@ -40,6 +41,13 @@ const deleteMovieHandler = movieId => {
   const listRoot = document.getElementById('movie-list');
   listRoot.children[movieIndex].remove(); // Secondly, we remove it from the DOM
   // listRoot.removeChild(listRoot.children[movieIndex]);
+};
+
+const deleteMovieHandler = movieId => {
+  const deleteMovieModal = document.getElementById('delete-modal');
+  deleteMovieModal.classList.add('visible'); // we can't use classList.toggle here, because removing doesn't make sense
+  toggleBackdrop();
+  // deleteMovie(movieId);
 };
 
 const renderNewMovieElement = (id, title, imageUrl, rating) => {
