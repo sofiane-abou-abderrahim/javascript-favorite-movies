@@ -30,7 +30,7 @@ we use movieId to find that movie with that ID in the movies array (declared abo
 So, we use a for of loop to find out the index in the array
 */
 
-const deleteMovie = () => {
+const deleteMovieHandler = movieId => {
   let movieIndex = 0;
   for (const movie of movies) {
     if (movie.id === movieId) {
@@ -49,10 +49,17 @@ const closeMovieDeletionModal = () => {
   deleteMovieModal.classList.remove('visible');
 };
 
-const deleteMovieHandler = movieId => {
+const startDeleteMovieHandler = movieId => {
   deleteMovieModal.classList.add('visible'); // we can't use classList.toggle here, because removing doesn't make sense
   toggleBackdrop();
-  // deleteMovie(movieId);
+  const cancelDeletionButton = deleteMovieModal.querySelector('.btn--passive');
+  const confirmDeletionButton = deleteMovieModal.querySelector('.btn--danger');
+
+  cancelDeletionButton.addEventListener('click', closeMovieDeletionModal);
+  confirmDeletionButton.addEventListener(
+    'click',
+    deleteMovieHandler.bind(null, movieId)
+  );
 };
 
 const renderNewMovieElement = (id, title, imageUrl, rating) => {
@@ -69,7 +76,10 @@ const renderNewMovieElement = (id, title, imageUrl, rating) => {
     </div>
   `;
   // outside this function, newMovieElement is undefined
-  newMovieElement.addEventListener('click', deleteMovieHandler.bind(null, id));
+  newMovieElement.addEventListener(
+    'click',
+    startDeleteMovieHandler.bind(null, id)
+  );
   // bind() helps us to find out which element was clicked, and we need a unique identifier for that movie that's created
   const listRoot = document.getElementById('movie-list');
   listRoot.append(newMovieElement);
