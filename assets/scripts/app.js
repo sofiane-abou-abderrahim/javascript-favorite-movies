@@ -11,6 +11,7 @@ const confirmAddMovieButton = cancelAddMovieButton.nextElementSibling; // just t
 const userInputs = addMovieModal.querySelectorAll('input');
 // const userInputs = addMovieModal.getElementsByTagName('input');
 const entryTextSection = document.getElementById('entry-text');
+const deleteMovieModal = document.getElementById('delete-modal'); // available globally to use it in closeMovieDeletionModal function
 
 const movies = [];
 
@@ -43,8 +44,12 @@ const deleteMovie = () => {
   // listRoot.removeChild(listRoot.children[movieIndex]);
 };
 
+const closeMovieDeletionModal = () => {
+  toggleBackdrop();
+  deleteMovieModal.classList.remove('visible');
+};
+
 const deleteMovieHandler = movieId => {
-  const deleteMovieModal = document.getElementById('delete-modal');
   deleteMovieModal.classList.add('visible'); // we can't use classList.toggle here, because removing doesn't make sense
   toggleBackdrop();
   // deleteMovie(movieId);
@@ -74,10 +79,14 @@ const toggleBackdrop = () => {
   backdrop.classList.toggle('visible');
 };
 
-const toggleMovieModal = () => {
+const closeMovieModal = () => {
+  addMovieModal.classList.remove('visible'); // removes instead of toggling
+};
+
+const showMovieModal = () => {
   // function () {}
   // addMovieModal.className = 'modal card visible';
-  addMovieModal.classList.toggle('visible');
+  addMovieModal.classList.add('visible'); // we use add instead of toggle
   toggleBackdrop(); // instead of adding another startAddMovieButton event listener
 };
 
@@ -90,7 +99,7 @@ const clearMovieInput = () => {
 };
 
 const cancelAddMovieHandler = () => {
-  toggleMovieModal(); // closes modal and backdrop
+  closeMovieModal(); // closes modal and backdrop
   clearMovieInput(); // cancels user input
 };
 
@@ -119,7 +128,8 @@ const addMovieHandler = () => {
 
   movies.push(newMovie);
   console.log(movies);
-  toggleMovieModal(); // closes modal and backdrop
+  closeMovieModal(); // closes modal and backdrop
+  toggleBackdrop(); // toggles the backdrop after added a movie
   clearMovieInput(); // cancels user input
   updateUI(); // updates entry text UI whenever a movie is added
   renderNewMovieElement(
@@ -131,10 +141,11 @@ const addMovieHandler = () => {
 };
 
 const backdropClickHandler = () => {
-  toggleMovieModal(); // closes modal and backdrop
+  closeMovieModal(); // closes modal and backdrop
+  closeMovieDeletionModal(); // closes delete movie modal and backdrop
 };
 
-startAddMovieButton.addEventListener('click', toggleMovieModal);
+startAddMovieButton.addEventListener('click', showMovieModal);
 // startAddMovieButton.addEventListener('click', toggleBackdrop); // called toggleBackdrop function inside toggleMovieModal instead
 backdrop.addEventListener('click', backdropClickHandler);
 cancelAddMovieButton.addEventListener('click', cancelAddMovieHandler);
